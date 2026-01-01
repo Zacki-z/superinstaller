@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+
+# Katalog att söka i (standard: .)
+DIR="${1:-.}"
+
+echo "Söker efter filer med framtida tidsstämplar i: $DIR"
+echo
+
+NOW=$(date +%s)
+
+find "$DIR" -type f -printf '%p\n' | while read -r FILE; do
+    # Ta ut birth time (skapelsedatum)
+    BIRTHTIME=$(stat -c %w "$FILE")
+
+    # Om birth time saknas (visas som "-"), hoppa över
+    if [[ "$BIRTHTIME" == "-" ]]; then
+        continue
+    fi
+
+    # Filens mtime som UNIX-tid
+    MTIME=$(stat -c %Y "$FILE")
+
+    # Birth time som UNIX-tid
+    BIRTHTIME_UNIX=$(date -d "$BIRTHTIME" +%s)
+
+    # Om mtime ligger i framtiden jämfört med aktuell tid
+    if [[ "$MTIME" -gt "$NOW" ]]; then
+        echo "Fixar: $FILE"
+        echo "  Skapades: $BIRTHTIME"
+        echo "  Ändringstid var: $(date -d @$MTIME)"
+
+        # Sätt ändringstid = skapelsedatum
+        touch -d "$BIRTHTIME" "$FILE"
+    fi
+done
+
+echo
+echo "Klart!"
+

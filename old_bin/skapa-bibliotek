@@ -1,0 +1,8 @@
+#!/bin/sh
+set -x
+set -euo pipefail
+echo on	
+echo starting
+sleep 2
+cd /media/alain/move_stuff
+mkdir -p dot-cache dot-config dot-darktable dot-mixx my_bin my_etc tar_files

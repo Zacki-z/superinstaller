@@ -1,0 +1,9 @@
+spotify
+audacity
+deadbeef-vs
+color-picker
+s4a
+slack
+vcard-studio
+protonmail-bridge
+

@@ -1,0 +1,18 @@
+# Kataloger som ska packas
+Dokument
+Documents
+Bilder
+Pictures
+Musik
+Music
+bup_darktable
+Skrivbord
+Desktop
+my_bin
+my_etc
+Calibre Library
+dot-files
+Arduino
+kicad_stuff
+Applications
+

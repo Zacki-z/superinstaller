@@ -1,0 +1,4 @@
+https://repo.protonvpn.com/debian/dists/stable/main/binary-all/protonvpn-stable-release_1.0.8_all.deb
+https://proton.me/download/bridge/protonmail-bridge_3.13.0-1_amd64.deb
+https://downloads.realvnc.com/download/file/vnc.files/VNC-Server-Latest-Linux-x64.deb
+

@@ -1,0 +1,5 @@
+#!/bin/sh
+set -x
+echo on	
+echo starting
+sudo mount -t  /home/alain/images/'ext bilder.img' /home/alain/test-mount

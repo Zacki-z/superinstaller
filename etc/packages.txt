@@ -1,0 +1,32 @@
+# programs
+calibre
+krita
+remmina
+network-manager-gnome
+iw
+wireshark
+netstat
+net-tools
+rpi-imager
+xtrkcad
+shellcheck
+git
+
+
+# bibliotek
+
+intel-opencl-icd 
+ocl-icd-libopencl1 
+clinfo
+
+
+# program efter added repo
+kicad
+vlc
+inkscape
+scribus
+rapid-photo-downloader
+mainline
+flatpak
+gnucash
+

@@ -1,0 +1,183 @@
+diverse appimage stuff
+1. Manuell metod (rekommenderad, helt under din kontroll)
+🔧 Steg-för-steg
+
+Flytta AppImage-filen till en permanent plats, t.ex.:
+
+mkdir -p ~/Applications
+mv Darktable-5.2.0-x86_64.AppImage ~/Applications/
+chmod +x ~/Applications/Darktable-5.2.0-x86_64.AppImage
+nano ~/.local/share/applications/darktable.desktop
+
+[Desktop Entry]
+Type=Application
+Name=Darktable
+Exec=/home/alain/Applications/Darktable-5.2.0-x86_64.AppImage
+Icon=/home/alain/Applications/darktable.png
+Comment=Open source photography workflow application
+Categories=Graphics;Photography;
+Terminal=false
+
+chmod +x ~/.local/share/applications/darktable.desktop
+
+update-desktop-database ~/.local/share/applications2. 
+
+Automatisk metod med AppImageLaunchersudo add-apt-repository ppa:appimagelauncher-team/stable -y
+sudo apt update
+sudo apt install appimagelauncher -y
+Sedan:
+
+Dubbelklicka på din .AppImage
+
+Du får frågan “Integrate and run?”
+
+Klicka Yes, och AppImageLauncher:
+
+Flyttar den till ~/Applications/
+
+Skapar .desktop-fil automatiskt
+
+Lägger till ikon och uppdaterar meny.
+
+#!/usr/bin/env bash
+# add_appimage_to_menu.sh
+# Lägger till en AppImage i den grafiska menyn (GNOME/KDE/XFCE m.fl.)
+set -euo pipefail
+
+# Fråga användaren
+read -rp "📦 Sökväg till AppImage-filen: " APPIMG
+read -rp "📝 Programnamn (visas i menyn): " NAME
+read -rp "🎨 Sökväg till ikon (PNG/SVG, valfritt): " ICON
+read -rp "📁 Kategori (t.ex. Graphics, AudioVideo, Utility): " CATEGORY
+
+# Kontrollera att AppImage finns
+if [[ ! -f "$APPIMG" ]]; then
+  echo "❌ Filen hittades inte: $APPIMG"
+  exit 1
+fi
+
+# Säkerställ standardplacering
+mkdir -p ~/.local/share/applications
+
+# Standardvärden
+ICON=${ICON:-}
+CATEGORY=${CATEGORY:-Utility}
+DESKTOP_FILE="${HOME}/.local/share/applications/${NAME,,}.desktop"
+
+# Skapa .desktop-fil
+cat >"$DESKTOP_FILE" <<EOF
+[Desktop Entry]
+Type=Application
+Name=${NAME}
+Exec=${APPIMG}
+Icon=${ICON}
+Comment=AppImage program (${NAME})
+Categories=${CATEGORY};
+Terminal=false
+EOF
+
+chmod +x "$DESKTOP_FILE"
+
+# Uppdatera meny-databasen
+update-desktop-database ~/.local/share/applications >/dev/null 2>&1 || true
+
+echo "✅ ${NAME} har lagts till i programmenyn!"
+echo "📄 Desktop-fil: $DESKTOP_FILE"
+[[ -n "$ICON" ]] && echo "🎨 Ikon: $ICON"
+echo "🚀 Du kan nu söka efter \"${NAME}\" i startmenyn."
+
+
+#!/usr/bin/env bash
+# add_appimage_to_menu_auto.sh
+# Automatisk menyintegration för en AppImage.
+# Usage:
+#   add_appimage_to_menu_auto.sh /sökväg/till/Program.AppImage [--name "Namn"] [--category Graphics] [--icon /path/icon.png]
+set -euo pipefail
+
+APPIMG="${1:-}"
+shift || true
+
+# Valfria flaggor
+NAME=""
+CATEGORY="Utility"
+ICON=""
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --name)     NAME="${2:-}"; shift 2 ;;
+    --category) CATEGORY="${2:-}"; shift 2 ;;
+    --icon)     ICON="${2:-}"; shift 2 ;;
+    *) echo "Okänd flagga: $1"; exit 1 ;;
+  esac
+done
+
+if [[ -z "$APPIMG" || ! -f "$APPIMG" ]]; then
+  echo "Användning: $0 /full/väg/till/Program.AppImage [--name \"Namn\"] [--category Graphics] [--icon /sökväg/icon.png]"
+  exit 1
+fi
+
+# Full väg + gör körbar
+APPIMG="$(readlink -f "$APPIMG")"
+chmod +x "$APPIMG" || true
+
+# Gissa namn om ej angivet: ta filnamn utan .AppImage och klipp av vanliga versionssuffikser
+if [[ -z "$NAME" ]]; then
+  base="$(basename "$APPIMG")"
+  NAME="${base%.AppImage}"
+  # försök trimma typiska versionsdelar (valfritt)
+  NAME="$(echo "$NAME" | sed -E 's/[-_]?([0-9][0-9a-zA-Z\.\-]+)$//')"
+  [[ -z "$NAME" ]] && NAME="${base%.AppImage}"
+fi
+
+# Standardplatser
+APPS_DIR="${HOME}/.local/share/applications"
+ICON_DIR="${HOME}/.local/share/icons/hicolor/256x256/apps"
+mkdir -p "$APPS_DIR" "$ICON_DIR"
+
+# Om ingen ikon angiven: försök extrahera från AppImage (.DirIcon)
+if [[ -z "$ICON" ]]; then
+  TMPDIR="$(mktemp -d)"
+  # AppImage kan extrahera med --appimage-extract
+  if "$APPIMG" --appimage-extract .DirIcon >/dev/null 2>&1; then
+    # Ligger i ./squashfs-root/.DirIcon
+    if [[ -f "squashfs-root/.DirIcon" ]]; then
+      ICON="${ICON_DIR}/$(echo "$NAME" | tr '[:upper:]' '[:lower:]' | tr ' ' '_' ).png"
+      install -m 0644 "squashfs-root/.DirIcon" "$ICON" || true
+    fi
+    rm -rf "squashfs-root" || true
+  fi
+  rmdir "$TMPDIR" 2>/dev/null || true
+fi
+
+# Om vi ännu inte har en ikon, lämna tomt (desktop-filen funkar ändå)
+ICON_LINE=""
+[[ -n "${ICON:-}" && -f "$ICON" ]] && ICON_LINE="Icon=${ICON}"
+
+# Skapa .desktop-fil
+DESKTOP_ID="$(echo "$NAME" | tr '[:upper:]' '[:lower:]' | tr ' /' '__').desktop"
+DESKTOP_FILE="${APPS_DIR}/${DESKTOP_ID}"
+
+cat >"$DESKTOP_FILE" <<EOF
+[Desktop Entry]
+Type=Application
+Name=${NAME}
+Exec=${APPIMG}
+${ICON_LINE}
+Comment=AppImage program (${NAME})
+Categories=${CATEGORY};
+Terminal=false
+EOF
+
+chmod +x "$DESKTOP_FILE"
+
+# Uppdatera databaser (ignorera om verktygen saknas)
+update-desktop-database "${APPS_DIR}" >/dev/null 2>&1 || true
+gtk-update-icon-cache -f "${HOME}/.local/share/icons/hicolor" >/dev/null 2>&1 || true
+xdg-desktop-menu forceupdate >/dev/null 2>&1 || true
+
+echo "✅ Menypost skapad:"
+echo "   ${DESKTOP_FILE}"
+[[ -n "${ICON_LINE}" ]] && echo "   Ikon: ${ICON}"
+echo "🚀 Starta via appmenyn eller kör: gtk-launch $(basename "$DESKTOP_FILE" .desktop)"
+
+

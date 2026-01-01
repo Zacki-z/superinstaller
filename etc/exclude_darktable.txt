@@ -1,0 +1,44 @@
+# ============================================================
+# Exclude-lista för Darktable-backup (Snap-version)
+# Syfte: hoppa över cache, systemfiler, symlänkar, themes och
+# Darktables egna snapshot-filer (.snp)
+# ============================================================
+
+# 🟣 Darktable-cache och förhandsvisningar
+.cache/**
+**/.cache/**
+mipmaps-*/**
+
+# 🟣 GTK/konfiglänkar som orsakar symlinkfel
+*/.config/gtk-3.0/**
+*/.config/gtk2.0/**
+
+# 🟣 GNOME/GLib schemas från Snap-miljön
+**/glib-2.0/schemas/**
+**/gsettings-desktop-schemas/**
+
+# 🟣 Brutna symlänkar till teman
+*/.themes/**
+*/.local/share/themes/**
+**/.themes/**
+**/.local/share/themes/**
+
+# 🟣 Snap-revisionsträd som innehåller länkar
+
+# 🟣 Temporära och onödiga filer
+**/tmp/**
+**/old/**
+**/Downloads/**
+**/fp-info-cache
+
+# 🟣 Darktable snapshot-filer (interna backuper)
+library.db-snp-*
+data.db-snp-*
+
+# 🟣 Diverse bygg- och loggfiler
+**/*.log
+**/*.lock
+**/*.bak
+**/*.tmp
+**/ibus/**
+

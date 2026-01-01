@@ -1,0 +1,85 @@
+   87  sudo apt install gparted
+   88  sudo apt install gpart
+  123  sudo apt install ./VNC-Viewer-7.12.0-Linux-x64.deb 
+  163  sudo dpkg -i ./protonvpn-stable-release_1.0.4_all.deb && sudo apt update
+  164  sudo apt install proton-vpn-gnome-desktop
+  165  sudo apt update && sudo apt upgrade
+  185  sudo apt update
+  186  sudo apt install gimagereader tesseract-ocr
+  245  sudo apt install mesa-utils
+  293  sudo apt install python3-pip
+  297  sudo apt install python3.12-venv
+  320  sudo apt update && sudo apt install kicad
+  321  sudo apt install kicad
+  334  sudo add-apt-repository ppa:kicad/kicad-8.0-releases
+  335  sudo apt update
+  336  sudo apt install kicad
+  348  sudo apt update
+  349  sudo apt install python3-schemdraw
+  351  sudo apt install pipx
+  354  apt search python3-schemdraw
+  375  sudo apt update
+  377  sudo apt install realvnc-vnc-server realvnc-vnc-viewer -y
+  380  sudo add-apt-repository ppa:kicad/kicad-9.0-releases
+  381  sudo apt update
+  382  sudo apt install kicad
+  383  sudo apt --fix-broken install
+  384  sudo apt clean
+  385  sudo apt update
+  386  sudo add-apt-repository ppa:kicad/kicad-9.0-releases
+  387  sudo apt update
+  388  sudo apt install kicad
+  389  sudo apt update
+  390  sudo apt install libocct-visualization-7.6t64 occt-misc
+  391  sudo apt-mark unhold occt-misc
+  392  sudo apt clean
+  393  sudo apt autoremove
+  394  sudo apt update --fix-missing
+  395  sudo apt --fix-broken install
+  396  sudo apt install kicad
+  403  sudo apt install kicad
+  406  sudo apt install libcanberra-gtk-module libcanberra-gtk3-module
+  407  sudo apt install libopencascade7
+  421  sudo add-apt-repository universe
+  422  sudo apt install libfuse2t64
+  424  sudo apt install libfuse.so.2
+  425  sudo apt install libfuse2
+  439  sudo apt install libfuse2t64
+  440  sudo apt install libfuse2
+  445  sudo apt install libfuse2
+  451  sudo  apt install libfuse2
+  453  sudo add-apt-repository ppa:appimagelauncher-team/stable
+  454  sudo apt update
+  455  sudo apt install appimagelauncher
+  456  sudo apt-get update
+  457  sudo apt install appimagelauncher
+  465  sudo apt update
+  466  sudo apt install libxcb-cursor0
+  488  sudo apt install espeak-ng
+  517  sudo apt install ./virtualbox-7.1_7.1.12-169651~Ubuntu~oracular_amd64.deb 
+  518  sudo apt-get install virtualbox-7.1
+  519  sudo apt-get install ./virtualbox-7.1_7.1.12-169651~Ubuntu~oracular_amd64.deb 
+  521  sudo apt-get install ./virtualbox-7.1_7.1.12-169651~Ubuntu~oracular_amd64.deb 
+  530  sudo apt install evtest
+  536  sudo apt remove --purge virtualbox virtualbox-dkms
+  562  sudo apt update
+  563  sudo apt install cups gutenprint printer-driver-gutenprint
+  573  man apt
+  574  sudp apt remove sudoku
+  575  sudo apt remove sudoku
+  576  man apt
+  577  sudo apt list
+  579  sudo add-apt-repository ppa:kicad/kicad-9.0-releases
+  580  sudo apt update
+  581  sudo apt install kicad
+  582  sudo apt update
+  583  sudo apt upgrade
+  599  sudo apt update
+  600  sudo apt install clinfo intel-opencl-icd beignet-opencl-icd ocl-icd-libopencl1
+  601  sudo apt install clinfo intel-opencl-icd  ocl-icd-libopencl1
+  603  sudo apt update
+  604  sudo apt install intel-opencl-icd ocl-icd-libopencl1 clinfo
+  605  sudo apt install intel-level-zero-gpu level-zero
+  618  sudo apt install flatpak
+  688  history | grep apt
+  689  history | grep apt >apt_install_stuff
