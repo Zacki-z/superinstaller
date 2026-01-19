@@ -1,0 +1,12 @@
+# app           path
+darktable   ~/.config/darktable
+darktable   ~/.var/app/org.darktable.Darktable/config/darktable
+darktable   ~/snap/darktable/current/.config/darktable
+
+kicad       ~/.config/kicad
+kicad       ~/.local/share/kicad
+
+homeassistant ~/.homeassistant
+
+rawtherapee ~/.config/RawTherapee
+
