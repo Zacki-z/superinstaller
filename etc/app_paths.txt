@@ -2,11 +2,13 @@
 darktable   ~/.config/darktable
 darktable   ~/.var/app/org.darktable.Darktable/config/darktable
 darktable   ~/snap/darktable/current/.config/darktable
+mixxx	     ~/.mixxx
 
 kicad       ~/.config/kicad
 kicad       ~/.local/share/kicad
 
 homeassistant ~/.homeassistant
 
-rawtherapee ~/.config/RawTherapee
+rawtherapee ~/.config/RawTherapee-AppImage
+thunderbird ~/snap/thunderbird/common/.thunderbird
 

@@ -1,0 +1,25 @@
+# Temporära filer och loggar
+*.log
+*.tmp
+*.swp
+*~
+.cache/
+__pycache__/
+
+# Backuper och arkiv
+*.bak
+*.old
+*.tar
+*.tar.gz
+*.tgz
+*.zip
+
+# Lokala listningar
+filer.txt
+
+# Hemligheter
+.env
+*.key
+*.pem
+credentials*
+secrets*

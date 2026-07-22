@@ -1,4 +1,6 @@
 #!/bin/bash
+# packa_upp_move 6.4
+# Installerar automatiskt pv via apt om kommandot saknas.
 set -euo pipefail
 
 # ===========================
@@ -55,6 +57,49 @@ TAR_NEW="hem"
 # ===========================
 log() {
     echo "$@" | tee -a "$LOG"
+}
+
+ensure_pv() {
+    # pv används av vissa backup-/återställningsflöden för att visa progress.
+    # Installera paketet automatiskt om kommandot inte redan finns.
+    if command -v pv >/dev/null 2>&1; then
+        log "✅ pv finns redan: $(command -v pv)"
+        return 0
+    fi
+
+    if [[ "$DRY_RUN" == "true" ]]; then
+        log "🟡 DRY-RUN: pv saknas. Skulle installera paketet 'pv' via apt."
+        return 0
+    fi
+
+    log "ℹ️  pv saknas. Försöker installera paketet 'pv'..."
+
+    if ! command -v apt-get >/dev/null 2>&1; then
+        log "❌ apt-get finns inte. Kan därför inte installera pv automatiskt."
+        log "   Installera pv manuellt med din distributions pakethanterare."
+        return 1
+    fi
+
+    local -a privilege_cmd=()
+    if (( EUID != 0 )); then
+        if command -v sudo >/dev/null 2>&1; then
+            privilege_cmd=(sudo)
+        else
+            log "❌ pv saknas och skriptet körs inte som root."
+            log "   sudo finns inte, så pv kan inte installeras automatiskt."
+            return 1
+        fi
+    fi
+
+    "${privilege_cmd[@]}" apt-get update
+    "${privilege_cmd[@]}" apt-get install -y pv
+
+    if ! command -v pv >/dev/null 2>&1; then
+        log "❌ Installationen avslutades, men kommandot pv hittas fortfarande inte."
+        return 1
+    fi
+
+    log "✅ pv installerades: $(command -v pv)"
 }
 
 ask_create_dir() {
@@ -118,6 +163,10 @@ date >> "$LOG"
 log "pack upp startar (DRY_RUN=$DRY_RUN)"
 log "Felfil (tar): $ERROR_LOG"
 log "Mål för tar-uppackning (dest): $TAR_DEST"
+
+# Kontrollera/installera pv innan återställningen fortsätter.
+ensure_pv
+
 sleep 1
 
 # Kolla USB
@@ -131,12 +180,12 @@ cd "$HOME_DIR"
 # ===========================
 # 1. Återställ config från USB
 # ===========================
-log "Återställer config från USB → HOME"
+log "Återställer config från USB → HOME, just nu utkommenterat /aw 251122"
 
-rsync_restore "${USB_MOUNT}/dot-mixxx/"     "${HOME_DIR}/.mixxx/"
-rsync_restore "${USB_MOUNT}/dot-cache/"     "${HOME_DIR}/.cache/"
-rsync_restore "${USB_MOUNT}/dot-darktable/" "${HOME_DIR}/snap/darktable/"
-rsync_restore "${USB_MOUNT}/dot-config/"    "${HOME_DIR}/.config/"
+#rsync_restore "${USB_MOUNT}/dot-mixxx/"     "${HOME_DIR}/.mixxx/"
+#rsync_restore "${USB_MOUNT}/dot-cache/"     "${HOME_DIR}/.cache/"
+#rsync_restore "${USB_MOUNT}/dot-darktable/" "${HOME_DIR}/snap/darktable/"
+#rsync_restore "${USB_MOUNT}/dot-config/"    "${HOME_DIR}/.config/"
 
 # ===========================
 # 2. Återställ my_bin och my_etc från USB

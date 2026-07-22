@@ -21,7 +21,7 @@ clinfo
 
 
 # program efter added repo
-kicad
+# kicad
 vlc
 inkscape
 scribus

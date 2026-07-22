@@ -1,8 +1,9 @@
 # div programs
-ppa:kicad/kicad-9.0-releases
+# ppa:kicad/kicad-9.0-releases
 ppa:inkscape.dev/stable
 ppa:dlynch3/ppa
 ppa:cappelikan/ppa
+ppa:mixxx/mixxx
 
 # OBS! Exempel: graphics updates
 # ppa:oibaf/graphics-driver
