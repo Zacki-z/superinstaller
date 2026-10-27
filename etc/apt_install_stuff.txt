@@ -38,7 +38,10 @@ sudo apt install -y \
   clinfo \
   intel-opencl-icd \
   ocl-icd-libopencl1 \
-  flatpak
+  flatpak \
+  recoll \
+  antiword python3-mutagen unrtf untex aspell-sv \
+  
 
 # ------------------------------------------------------------
 # 3. Intel Level Zero/OpenCL – valfritt
